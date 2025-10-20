@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package robot.map;
+
+// Request to get or stream a map
+message MapRequest {
+  string map_id = 1;
+}
+
+// Unary response
+message MapResponse {
+  string message = 1;
+}
+
+// Chunk for server-streaming
+message MapChunk {
+  bytes data = 1;
+  int32 chunk_id = 2;
+  bool last_chunk = 3;
+}
+
+service MapService {
+  // Unary RPC
+  rpc GetMap(MapRequest) returns (MapResponse);
+
+  // Server streaming RPC
+  rpc StreamMap(MapRequest) returns (stream MapChunk);
+}
